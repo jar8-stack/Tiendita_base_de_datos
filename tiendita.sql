@@ -5,3 +5,115 @@ ON venta
 FOR EACH ROW 
 UPDATE producto SET stock= stock+ deleted.Cantidad
 WHERE idProducto= (SELECT idProducto FROM venta_producto WHERE idVenta= deleted.idVenta);
+
+
+-- ---------------------------------- procedimientos almacenados - hannita --------------------------------------------------
+
+
+-- ------------------------------------------------------- PRODUCTO --
+
+-- Procedimiento almacenado para Buscar Producto
+
+create procedure Busca_Prod
+@id int
+as
+select * from Producto
+where idProducto = @id;
+ 
+-- Procedimiento almacenado para Editar Producto
+
+create procedure Edita_Prod
+@id int 
+@precio float(2)
+@stock int
+as
+update Producto set Precio=@precio, Stock=@stock
+where idProducto = @id;
+
+
+-- Procedimiento almacenado para Eliminar Producto
+
+create procedure Elimina_Prod
+@id int
+as
+delete from Venta_Producto where idProducto=@id;
+delete from Producto where idProducto=@id;
+
+-- ------------------------------------------------------ PROVEEDOR --
+
+
+-- Procedimiento almacenado para Buscar Proveedor
+create procedure Busca_Prove
+@id int
+as
+select * from Proveedor
+where idProveedor = @id;
+
+
+-- Procedimiento almacenado para Editar Proveedor
+
+create procedure Edita_Prove
+@id int 
+@nombre varchar(45)
+@contacto varchar(45)
+as
+update Proveedor set Nombre=@nombre, Contacto=@contacto
+where idProveedor = @id;
+
+
+-- Procedimiento almacenado para Eliminar Proveedor
+create procedure Elimina_Prove
+@id int
+as
+delete from Producto where idProveedor=@id;
+delete from Proveedor where idProveedor=@id;
+
+
+-- -----------------------------------------------------  USUARIO --
+
+
+-- Procedimiento almacenado para Buscar Usuario
+create procedure Busca_User
+@id int
+as
+select * from Usuario
+where idUsuario = @id;
+
+
+
+
+-- Procedimiento almacenado para Editar Usuario
+
+-- CREO QUE HAY QUE CAMBIARLE DE NOMBRE A APELLIDO MATERNO Y PATERNO EN LA TABLA POR QUE VA SEPARADO
+-- Y NO TIENE GUION BAJO , IGUAL A PASSWORD POR QUE AQUI EN EL SCRIPT ME LO TOMA EN AZUL Y NO SE 
+-- SI AFECTE EN ALGO ....
+
+create procedure Edita_User
+@id int 
+@nombre varchar(45)
+@apellido_P varchar(45)
+@apellido_M varchar(45)
+@usuario varchar(45)
+@correo varchar(45)
+@contrasena varchar(25)
+@tipo_usuario tinyint
+as
+update Usuario set Nombre=@nombre,Apellido Paterno=@apellido_P,
+Apellido Materno=@apellido_M, Usuario=@usuario, Correo=@correo,
+Password=@contrasena,Tipo_User=@tipo_usuario  
+where idUsuario = @id;
+
+
+
+
+-- Procedimiento almacenado para Eliminar Usuario
+
+create procedure Elimina_User
+@id int
+as
+delete from Venta where idUsuario=@id;
+delete from Sucursal where idUsuario=@id;
+delete from Empleado where idUsuario=@id;
+delete from Usuario where idUsuario=@id;
+
+-- ----------------------------------------------------------------------------------------------------------
